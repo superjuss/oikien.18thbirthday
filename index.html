@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday, [Nama]!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ff9a9e, #fecfef);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    /* Halaman Awal */
+    .home {
+      text-align: center;
+      max-width: 600px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .home h1 {
+      font-size: 3rem;
+      color: #d62828;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      background: #ff4757;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+      box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: #ff6b81;
+    }
+
+    /* Menu Utama - Versi "These Are For You!" */
+    .menu-container {
+      display: none;
+      width: 100%;
+      max-width: 900px;
+      margin-top: 30px;
+      background: #fffaf0;
+      background-size: cover;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .menu-title {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #d62828;
+      margin-bottom: 10px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .menu-subtitle {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .menu-item {
+      background: rgba(255, 255, 255, 0.85);
+      border: 3px solid #d62828;
+      border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      -content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .menu-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      color: #d62828;
+    }
+
+    .menu-text {
+      font-weight: bold;
+      color: #333;
+      font-size: 1.2rem;
+    }
+
+    /* Konten Detail */
+    .content-container {
+      display: none;
+      width: 100%;
+      max-width: 900px;
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .content-header {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #d62828;
+      font-size: 2rem;
+    }
+
+    .back-btn {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    /* FOTO KENANGAN - GAYA POLAROID COLLAGE SAMA PERSIS GAMBAR */
+    .polaroid-gallery {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      overflow: hidden;
+      background: url('https://i.imgur.com/3QYjXhT.png') no-repeat center center;
+      background-size: cover;
+      padding: 20px;
+    }
+
+    .polaroid {
+      position: absolute;
+      width: 180px;
+      background: white;
+      border: 8px solid #8B0000; /* Merah marun tebal */
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      overflow: hidden;
+      transform-origin: center;
+      padding-bottom: 75%; /* Rasio 4:3 */
+      position: relative;
+    }
+
+    .polaroid img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.95) contrast(0.98) saturate(0.95);
+    }
+
+    .polaroid-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 8px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #333;
+      font-style: italic;
+      z-index: 10;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .arrow {
+      position: absolute;
+      font-size: 1.2rem;
+      color: #8B0000;
+      z-index: 10;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .text-label {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      color: #8B0000;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    /* BUKET BUNGA - SCRAPBOOK STYLE */
+    .bouquet-scrapbook {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      background: url('https://i.imgur.com/3QYjXhT.png') no-repeat center center;
+      background-size: cover;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bouquet-img {
+      width: 200px;
+      height: 250px;
+      background-image: url('https://i.imgur.com/8Jj2uZq.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin-right: 30px;
+    }
+
+    .bouquet-title {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
+      color: #d62828;
+      font-weight: bold;
+      text-align: center;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .bubble-text {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 2px solid #d62828;
+      font-size: 0.9rem;
+      color: #333;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      max-width: 200px;
+      text-align: center;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .bubble-text:nth-child(1) { top: 30px; right: 20px; }
+    .bubble-text:nth-child(2) { top: 80px; right: 40px; }
+    .bubble-text:nth-child(3) { top: 130px; right: 20px; }
+    .bubble-text:nth-child(4) { top: 180px; right: 50px; }
+    .bubble-text:nth-child(5) { top: 230px; right: 20px; }
+    .bubble-text:nth-child(6) { top: 280px; right: 40px; }
+    .bubble-text:nth-child(7) { top: 330px; right: 20px; }
+    .bubble-text:nth-child(8) { top: 380px; right: 50px; }
+
+    /* Video YouTube */
+    .video-container {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      margin-top: 15px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .video-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-title {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: #333;
+    }
+
+    /* Surat */
+    .letter {
+      width: 100%;
+      height: 300px;
+      background: #fdf6e3;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid #e8e0cd;
+      border-radius: 10px;
+      padding: 30px;
+      display: flex;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #5a5245;
+      text-align: left;
+      font-style: italic;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow-y: auto;
+    }
+
+    /* Music Player */
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .music-player button {
+      background: #ff4757;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .music-player button:hover {
+      background: #ff6b81;
+    }
+
+    .music-player span {
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .home h1 { font-size: 2rem; }
+      .btn { font-size: 1.2rem; }
+      .menu-title { font-size: 2rem; }
+      .menu-item { height: 150px; }
+      .menu-icon { font-size: 2.5rem; }
+      .polaroid-gallery { height: 400px; }
+      .polaroid { width: 140px; }
+      .polaroid img { height: 120px; }
+      .bouquet-scrapbook { height: 400px; }
+      .bouquet-img { width: 150px; height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HALAMAN AWAL -->
+  <div class="home" id="home">
+    <h1>Happy Birthday <span id="name">Oikien</span>!</h1>
+    <p>Do you want to see your special gift?  🎉</p>
+    
+   <button class="btn" onclick="showMenu()">YESSS PLEASEEE</button>
+  </div>
+
+  <!-- MENU PILIHAN - VERSI "THESE ARE FOR YOU!" -->
+  <div class="menu-container" id="menu">
+    <h2 class="menu-title">THESE ARE FOR YOU!</h2>
+    <p class="menu-subtitle">I hope you like ittt </p>
+    <div class="menu-grid">
+      <div class="menu-item" onclick="showContent('photos')">
+        <div class="menu-icon">🖼️</div>
+        <div class="menu-text">Our Memories</div>
+      </div>
+      <div class="menu-item" onclick="showContent('bouquet')">
+        <div class="menu-icon">💐</div>
+        <div class="menu-text">TEBAKK</div>
+      </div>
+      <div class="menu-item" onclick="showContent('video')">
+        <div class="menu-icon">🔒</div>
+        <div class="menu-text">zZz</div>
+      </div>
+      <div class="menu-item" onclick="showContent('letter')">
+        <div class="menu-icon">✉️</div>
+        <div class="menu-text">SPECIAL LETTER OFC</div>
+      </div>
+    </div>
+  </div>
+
+ <!-- KONTEN FOTO KENANGAN - Versi SIMPEL (Grid Bersih, Tanpa Efek) -->
+<div class="content-container" id="photos-content">
+  <h2 class="content-header">Memoriess</h2>
+  <button class="back-btn" onclick="backToMenu()">← Kembali</button>
+  <div class="simple-gallery" style="
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); 
+  gap: 8px; 
+  margin-top: 20px;
+  padding: 10px;
+  max-width: 100%;
+">
+  <!-- 15 foto -->
+  <img src="https://i.imgur.com/zycocsg.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/adCJFuK.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/dixTo1q.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/jBeWgWZ.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/mQqA42V.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/EMXeHCC.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/tZg38S3.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/0g2ckkl.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/dDMCfYJ.png" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/1PAX7CZ.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/lqu0oKZ.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/up3sCJd.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/VIx8Keq.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/yH42ojc.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+  <img src="https://i.imgur.com/1ZMsyYv.jpeg" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+</div>
+</div>
+
+ <div class="content-container" id="bouquet-content">
+  <h2 class="content-header">Various Messages from Various Person Too 💫</h2>
+  <button class="back-btn" onclick="backToMenu()">← Kembali</button>
+  <div class="bubble-static" style="
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: linear-gradient(135deg, #fff9f9, #f0f8ff);
+    border-radius: 16px;
+    overflow: hidden;
+    padding: 20px;
+  ">
+    <div style="position: absolute; top: 20px; left: 30px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">musang kobar</div>
+    <div style="position: absolute; top: 85px; left: 120px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">tumpengan gx</div>
+    <div style="position: absolute; top: 40px; left: 260px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">omg</div>
+    <div style="position: absolute; top: 150px; left: 60px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">sigmaa</div>
+    <div style="position: absolute; top: 210px; left: 200px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">suka hadiah kami gxxx</div>
+    <div style="position: absolute; top: 60px; left: 380px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">semoga jerawatnya mendingan yaa</div>
+    <div style="position: absolute; top: 120px; left: 320px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">Kgn rahma</div>
+    <div style="position: absolute; top: 250px; left: 90px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">STOP SOK SIBUK</div>
+    <div style="position: absolute; top: 180px; left: 420px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">alamak jang ultah die</div>
+    <div style="position: absolute; top: 300px; left: 240px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">Ulang tahun? Yauda… selamat.</div>
+    <div style="position: absolute; top: 90px; left: 480px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">Kamu tau gak apa persamaan kmu sama narkoba? sama sama bikin melayang</div>
+    <div style="position: absolute; top: 270px; left: 360px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">ce setela semoga cepat tobat</div>
+    <div style="position: absolute; top: 340px; left: 130px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">alay bgttt...</div>
+    <div style="position: absolute; top: 220px; left: 520px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">jika harimu buruk ingat masih ada roblox yg harus dinafkahi</div>
+    <div style="position: absolute; top: 380px; left: 300px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">semoga hidup kmu disemogakan semua yg sudah di semoga semogakan</div>
+    <div style="position: absolute; top: 420px; left: 80px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">dihina tak tumbang dipuji tak tuntuang</div>
+    <div style="position: absolute; top: 360px; left: 460px; background: white; border: 2px solid #ff6b81; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; color: #d62828; font-weight: bold; font-family: 'Comic Sans MS', cursive;">ohhhhhh gitu sekarang</div>
+  </div>
+</div>
+
+  <!-- KONTEN APOD: 18 Years Ago (19 Nov 2007) -->
+<div class="content-container" id="video-content">
+  <h2 class="content-header">19 November 2007</h2>
+  <button class="back-btn" onclick="backToMenu()">← Kembali</button>
+
+  <div style="text-align: center; margin: 20px 0;">
+    <img 
+      src="https://i.imgur.com/d1B9HI8.jpeg" 
+      alt="Sub-Visual Aurora over Juneau, Alaska"
+      style="width: 100%; max-width: 800px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+    >
+    <p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
+      Sub-Visual Aurora over Juneau, Alaska — captured by camera, invisible to naked eye.
+    </p>
+  </div>
+
+  <div style="line-height: 1.7; font-size: 1.05rem; color: #333; margin: 20px 0;">
+    <p>
+      Some auroras can only be seen with a camera, hey’re called <strong>sub-visual</strong> and are too faint for the human eye.
+    </p>
+    <p>
+      Why? Because our eyes only gather light for a fraction of a second, while a camera shutter can stay open longer, revealing hidden green glows near the horizon.
+    </p>
+    <p>
+      This one was photographed above <strong>Juneau, Alaska</strong>. Auroras form when energetic particles from the Sun disturb Earth’s magnetic field, then rain down near the poles and excite oxygen. When oxygen regains electrons, it emits that iconic <span style="color:#2e8b57; font-weight:bold">green light</span>.
+    </p>
+  </div>
+
+  <div style="font-size: 0.85rem; color: #777; border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px;">
+    <p>From <a href="https://apod.nasa.gov/apod/ap071119.html" target="_blank" style="color:#d62828; text-decoration: none;">NASA APOD — 19 November 2007</a></p>
+    <p>Authors: Robert Nemiroff (MTU) & Jerry Bonnell (UMCP) | NASA Official: Phillip Newman</p>
+  </div>
+</div>
+
+  <!-- KONTEN SURAT -->
+  <div class="content-container" id="letter-content">
+    <h2 class="content-header">From the deepest heart</h2>
+    <button class="back-btn" onclick="backToMenu()">← Kembali</button>
+    <div class="letter">
+      
+      <p>
+        
+        Hipibidiiii twinss,<br><br>
+      Makasih yea udah lahir ke dunia terus bikin mental aku hancur tiap hari, semoga tugas dan pendikar untannya makin banyak ya. BERCANDAAAA semoga cepet selesai semua woi, bising liat kau sok sibuk tiap hari.<br><br>
+     Awas aja ya kalo masih sok sombonk, sok sibuk pas udah selesai semua tugas tugas amajingnya. sering sering ajak keluar lagi pwis. #missoldoikien<br><br>
+      I HOPE YOU GET WHATEVER U WISH AND YOU WANT IN UR 18 BIRTHDAY and MAY GOD BLESS AND PROTECT U WHENEVER & WHEREVER U GO.<br><br>
+      I hope u like this gift, this my first time make this things sijdaijwd (SI Pride bos) maaf gugup<br><br>
+      — Salam Booyah</p>
+    </div>
+  </div>
+
+ <!-- MUSIC PLAYER - VERSI MP3 LANGSUNG (JALAN DI CODEPEN!) -->
+<div style="
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.85);
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  font-size: 0.85rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+">
+  <span>🎧 Party 4 U — Charli XCX</span>
+  <button id="musicBtn" style="
+    background: #ff4757; color: white; border: none; 
+    width: 24px; height: 24px; border-radius: 50%; 
+    font-size: 0.7rem; cursor: pointer;
+  ">▶</button>
+</div>
+
+<script>
+  const audio = new Audio('https://ia601706.us.archive.org/2/items/charli-xcx-party-4-u-official-video/Charli%20xcx%20-%20party%204%20u%20%28official%20video%29.mp3');
+  audio.loop = true;
+  audio.volume = 0.3;
+
+  document.getElementById('musicBtn').addEventListener('click', function() {
+    if (audio.paused) {
+      audio.play().catch(e => {
+        console.log("First play needs user interaction — click again.");
+        // Fallback: fokus halaman agar browser izinkan play
+        document.body.focus();
+      });
+      this.textContent = '⏸';
+    } else {
+      audio.pause();
+      this.textContent = '▶';
+    }
+  });
+</script>
+  
+  <script>
+  function showMenu() {
+      document.getElementById('home').style.display = 'none';
+      document.getElementById('menu').style.display = 'block';
+    }
+
+    function showContent(id) {
+      // Sembunyikan semua konten
+      document.querySelectorAll('.content-container').forEach(el => {
+        el.style.display = 'none';
+      });
+      // Tampilkan konten sesuai id
+      document.getElementById(id + '-content').style.display = 'block';
+      document.getElementById('menu').style.display = 'none';
+    }
+
+    function backToMenu() {
+      // Sembunyikan semua konten
+      document.querySelectorAll('.content-container').forEach(el => {
+        el.style.display = 'none';
+      });
+      // Tampilkan kembali menu
+      document.getElementById('menu').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
